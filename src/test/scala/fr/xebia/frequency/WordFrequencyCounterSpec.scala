@@ -4,17 +4,14 @@ import org.scalatest._
 
 class WordFrequencyCounterSpec extends FunSpec with Matchers {
 
-  lazy val exclusions = scala.io.Source
-    .fromInputStream(getClass.getResourceAsStream("/stop_words.txt")).getLines()
-    .mkString.split(",").toList
 
-  val count = WordFrequencyCounter(exclusions, 25)
+  val count = 25
 
   describe("Word frequency counter using harcoded data") {
 
     it("should ignore special characters") {
       val words = List("hEllo worlD worLd , to ; 4 (")
-      count.frequenciesOf(words) should be(List(("world", 2), ("hello", 1)))
+      WordFrequencyCounter.frequenciesOf(words, count) should be(List(("world", 2), ("hello", 1)))
     }
 
     it("should handle several lines") {
@@ -22,7 +19,7 @@ class WordFrequencyCounterSpec extends FunSpec with Matchers {
         "White tigers live mostly in India",
         "Wild lions live mostly in Africa"
       )
-      count.frequenciesOf(words) should be(List(
+      WordFrequencyCounter.frequenciesOf(words, count) should be(List(
         ("mostly", 2), ("live", 2), ("white", 1), ("africa", 1), ("lions", 1), ("tigers", 1), ("india", 1), ("wild", 1)
       ))
     }
@@ -35,9 +32,7 @@ class WordFrequencyCounterSpec extends FunSpec with Matchers {
       .mkString.split(",").toList
 
     it("should find the most frequent words") {
-      val response = count.frequenciesOf(words)
-
-      response should be(List(
+      WordFrequencyCounter.frequenciesOf(words, count) should be(List(
         ("water", 5), ("whenever", 4), ("take", 3), ("nothing", 3), ("upon", 3), ("stand", 3), ("men", 3), ("high", 2),
         ("one", 2), ("thousands", 2), ("time", 2), ("streets", 2), ("little", 2), ("crowds", 2), ("here", 2), ("come", 2),
         ("ships", 2), ("up", 2), ("myself", 2), ("city", 2), ("find", 2), ("those", 1), ("never", 1), ("reefs", 1), ("experiment", 1)

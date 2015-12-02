@@ -1,33 +1,32 @@
 package fr.xebia.frequency
 
-// TODO: use only functions!
+object WordFrequencyCounter {
 
-case class WordFrequencyCounter(exclusions: List[String], maxWords : Int) {
-
-  def frequenciesOf(words: List[String]): Seq[(String, Int)] = {
-    val onlyWords = isValidWord(exclusions)_
-    val triggerWith = filterWith(onlyWords) _ andThen groupWordsTogether andThen sortWords
+  def frequenciesOf(words: List[String], maxWords : Int): Seq[(String, Int)] = {
+    val triggerWith = removeStopWords _ andThen groupWordsTogether andThen sortWords(maxWords)
     triggerWith(words)
   }
 
-  def filterWith(onlyWords: (String) => Boolean)(words: List[String]): List[String] =
+  def removeStopWords(words: List[String]): List[String] = {
+    val exclusions = scala.io.Source
+      .fromInputStream(getClass.getResourceAsStream("/stop_words.txt")).getLines()
+      .mkString.split(",").toList
     words
       .flatMap(_.split(" "))
       .map(_.toLowerCase)
-      .filter(onlyWords)
-
-  def isValidWord(exclusions: List[String])(word: String): Boolean =
-    !word.isEmpty && !exclusions.contains(word) && word.forall(_.isLetter)
-
-  def sortWords(frequency: Map[String, Int]): Seq[(String, Int)] =
-    frequency.map { case (k, v) => (k, v) }.toSeq
-      .sortBy(t => t._2)//(Ordering[Int].reverse)
-      .reverse
-      .take(maxWords)
+      .filter(!exclusions.contains(_))
+      .filter(_.forall(_.isLetter))
+      .filterNot(_.isEmpty)
+  }
 
   def groupWordsTogether(words: List[String]): Map[String, Int] =
     words
       .groupBy(identity)
       .mapValues { t: List[String] => t.size }
 
+  def sortWords(maxWords: Int)(frequency: Map[String, Int]): Seq[(String, Int)] =
+    frequency.map { case (k, v) => (k, v) }.toSeq
+      .sortBy(t => t._2)
+      .reverse
+      .take(maxWords)
 }
