@@ -3,8 +3,12 @@ package fr.xebia.frequency
 object WordFrequencyCounter {
 
   def frequenciesOf(words: List[String], maxWords : Int): Seq[(String, Int)] = {
-    val triggerWith = removeStopWords _ andThen groupWordsTogether andThen sortWords(maxWords)
+    val triggerWith = removeSpecialChars _ andThen removeStopWords andThen groupWordsTogether andThen sortWords(maxWords)
     triggerWith(words)
+  }
+
+  def removeSpecialChars(lines: List[String]): List[String] = {
+    lines.map(_.replaceAll("[,|;|.]", ""))
   }
 
   def removeStopWords(words: List[String]): List[String] = {
@@ -24,9 +28,13 @@ object WordFrequencyCounter {
       .groupBy(identity)
       .mapValues { t: List[String] => t.size }
 
-  def sortWords(maxWords: Int)(frequency: Map[String, Int]): Seq[(String, Int)] =
+  def sortWords(maxWords: Int)(frequency: Map[String, Int]): Seq[(String, Int)] = {
     frequency.map { case (k, v) => (k, v) }.toSeq
-      .sortBy(t => t._2)
-      .reverse
+      .sortWith {
+        case ((k1, v1), (k2, v2)) if v1 == v2 => k1.equals(k2)
+        case ((k1, v1), (k2, v2)) => v1 > v2
+      }
+//      .reverse
       .take(maxWords)
+  }
 }

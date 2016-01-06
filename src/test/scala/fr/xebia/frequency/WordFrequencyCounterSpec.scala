@@ -1,14 +1,13 @@
 package fr.xebia.frequency
 
-import org.scalatest._
+import org.scalatest.{Matchers, FunSpec}
 
 class WordFrequencyCounterSpec extends FunSpec with Matchers {
 
-
   val count = 25
 
-  describe("Word frequency counter using harcoded data") {
-
+  describe("Word frequency counter using hardcoded data")  {
+pending
     it("should ignore special characters") {
       val words = List("hEllo worlD worLd , to ; 4 (")
       WordFrequencyCounter.frequenciesOf(words, count) should be(List(("world", 2), ("hello", 1)))
@@ -28,14 +27,14 @@ class WordFrequencyCounterSpec extends FunSpec with Matchers {
 
   describe("Word frequency counter reading data from a file") {
     lazy val words: List[String] = scala.io.Source
-      .fromInputStream(getClass.getResourceAsStream("/mobydick.txt")).getLines()
-      .mkString.split(",").toList
+      .fromInputStream(getClass.getResourceAsStream("/mobydick.txt")).getLines().toList
 
     it("should find the most frequent words") {
       WordFrequencyCounter.frequenciesOf(words, count) should be(List(
-        ("water", 5), ("whenever", 4), ("take", 3), ("nothing", 3), ("upon", 3), ("stand", 3), ("men", 3), ("high", 2),
-        ("one", 2), ("thousands", 2), ("time", 2), ("streets", 2), ("little", 2), ("crowds", 2), ("here", 2), ("come", 2),
-        ("ships", 2), ("up", 2), ("myself", 2), ("city", 2), ("find", 2), ("those", 1), ("never", 1), ("reefs", 1), ("experiment", 1)
+        ("water", 6),
+        ("whenever", 4),
+        ("upon", 3), ("take", 3), ("stand", 3), ("nothing", 3), ("men", 3), ("land", 3), ("high", 3),
+        ("warehouses", 2), ("up", 2), ("time", 2), ("thousands", 2), ("streets", 2), ("ships", 2), ("reveries", 2), ("one", 2), ("ocean", 2), ("myself", 2), ("more", 2), ("little", 2), ("here", 2), ("find", 2), ("crowds", 2), ("come", 2)
       ))
     }
 
