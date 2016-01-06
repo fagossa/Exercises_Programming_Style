@@ -1,21 +1,35 @@
-introduction :
- ambition du talk : arrêter tous les trolls de langage sur Internet
- qu'est-ce qu'un style ? = somme de contraintes
- contextualiser le style dans son époque : notion de progrès
- test d'intégration
+## Introduction ##
 
- exemple : word frequency
+Purpose of this talk: stop every langages trolls on the Internet :)
 
-en refactorant
+_style_ definition: this is an aggregation of constraints.
 
-I monolithic <- introduction au problème et première implémentation
+A style should be contextualized from an historical point of vue: is IT progress?
 
-II orienté objet = things <- orienté objet + gestion des erreurs (cf adversity)
+Note that we will run integration test during all session.
 
-III fonctionel = candy factory = pipeline = composition de fonctions (<- repart-on de monolithic ou de oo ?)
+Our exemple: word frequency
 
-IV code golf <- one liner pour le fun
+## First ##
 
-conclusion :
- connaître les contraintes des frameworks/langages/fonctionnel car ça t'impose un style
- quand on maîtrise plusieurs styles, on peut plus facielement changer de l'un à l'autre
+monolithic <- good problem introduction and first implementation
+
+## Second ##
+
+object oriented = things <- object oriented and then error handling (cf adversity)
+
+## Third ##
+
+functional = candy factory = pipeline = function composition
+
+**Question**: do we go back to monolithic in order to refactor easier?
+
+## Four ##
+
+code golf <- one liner just for fun
+
+## Conclusion ##
+
+Know constraints of your frameworks/langages/fonctionnal requirements because it yields to a style
+
+When one master many styles then we can switch between any easier

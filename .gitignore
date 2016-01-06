@@ -1,5 +1,3 @@
-.idea
-/project/*-shim.sbt
-/project/project/
-/project/target/
-/target/
+.idea/
+target/
+*.iml
