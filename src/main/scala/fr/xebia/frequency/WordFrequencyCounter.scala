@@ -2,7 +2,7 @@ package fr.xebia.frequency
 
 object WordFrequencyCounter {
 
-  def frequenciesOf(words: List[String], maxWords : Int): Seq[(String, Int)] = {
+  def frequenciesOf(words: List[String], maxWords: Int): Seq[(String, Int)] = {
     val triggerWith = removeSpecialChars _ andThen removeStopWords andThen groupWordsTogether andThen sortWords(maxWords)
     triggerWith(words)
   }
@@ -30,11 +30,7 @@ object WordFrequencyCounter {
 
   def sortWords(maxWords: Int)(frequency: Map[String, Int]): Seq[(String, Int)] = {
     frequency.map { case (k, v) => (k, v) }.toSeq
-      .sortWith {
-        case ((k1, v1), (k2, v2)) if v1 == v2 => k1.equals(k2)
-        case ((k1, v1), (k2, v2)) => v1 > v2
-      }
-//      .reverse
+      .sortWith { case ((word1, count1), (word2, count2)) => if (count1 == count2) word1.compareTo(word2) <= 0 else count1 > count2 }
       .take(maxWords)
   }
 }

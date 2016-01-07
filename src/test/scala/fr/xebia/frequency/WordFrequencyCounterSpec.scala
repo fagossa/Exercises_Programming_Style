@@ -1,13 +1,12 @@
 package fr.xebia.frequency
 
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.{FunSpec, Matchers}
 
 class WordFrequencyCounterSpec extends FunSpec with Matchers {
 
   val count = 25
 
-  describe("Word frequency counter using hardcoded data")  {
-pending
+  describe("Word frequency counter using hardcoded data") {
     it("should ignore special characters") {
       val words = List("hEllo worlD worLd , to ; 4 (")
       WordFrequencyCounter.frequenciesOf(words, count) should be(List(("world", 2), ("hello", 1)))
@@ -19,7 +18,8 @@ pending
         "Wild lions live mostly in Africa"
       )
       WordFrequencyCounter.frequenciesOf(words, count) should be(List(
-        ("mostly", 2), ("live", 2), ("white", 1), ("africa", 1), ("lions", 1), ("tigers", 1), ("india", 1), ("wild", 1)
+        ("live", 2), ("mostly", 2),
+        ("africa", 1), ("india", 1), ("lions", 1), ("tigers", 1), ("white", 1), ("wild", 1)
       ))
     }
 
@@ -33,8 +33,8 @@ pending
       WordFrequencyCounter.frequenciesOf(words, count) should be(List(
         ("water", 6),
         ("whenever", 4),
-        ("upon", 3), ("take", 3), ("stand", 3), ("nothing", 3), ("men", 3), ("land", 3), ("high", 3),
-        ("warehouses", 2), ("up", 2), ("time", 2), ("thousands", 2), ("streets", 2), ("ships", 2), ("reveries", 2), ("one", 2), ("ocean", 2), ("myself", 2), ("more", 2), ("little", 2), ("here", 2), ("find", 2), ("crowds", 2), ("come", 2)
+        ("high", 3), ("land", 3), ("men", 3), ("nothing", 3), ("stand", 3), ("take", 3), ("upon", 3),
+        ("city", 2), ("come", 2), ("crowds", 2), ("find", 2), ("here", 2), ("little", 2), ("more", 2), ("myself", 2), ("ocean", 2), ("one", 2), ("reveries", 2), ("ships", 2), ("streets", 2), ("thousands", 2), ("time", 2), ("up", 2)
       ))
     }
 
