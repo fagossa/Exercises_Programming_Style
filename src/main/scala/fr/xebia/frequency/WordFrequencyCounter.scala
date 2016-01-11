@@ -33,4 +33,9 @@ object WordFrequencyCounter {
       .sortWith { case ((word1, count1), (word2, count2)) => if (count1 == count2) word1.compareTo(word2) <= 0 else count1 > count2 }
       .take(maxWords)
   }
+
+  def main(args: Array[String]) {
+    WordFrequencyCounter.frequenciesOf(scala.io.Source.fromFile(args(0)).getLines().toList, 25)
+      .foreach { case (word, frequency) => println(s"$word  -  $frequency") }
+  }
 }
