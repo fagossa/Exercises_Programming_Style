@@ -2,40 +2,59 @@ package fr.xebia.frequency
 
 object WordFrequencyCounter {
 
-  def frequenciesOf(words: List[String], maxWords: Int): Seq[(String, Int)] = {
-    val triggerWith = removeSpecialChars _ andThen removeStopWords andThen groupWordsTogether andThen sortWords(maxWords)
-    triggerWith(words)
+  class WordFrequencyController(words: List[String], maxWords: Int) {
+    def run: Seq[(String, Int)] = {
+      val withoutSpecialChars = new SpecialCharsManager(words).removeSpecialChars
+
+      val withoutStopWords = new StopWordManager(withoutSpecialChars).removeStopWords()
+
+      // groups and sorts
+      val frequencyManager = new WordFrequencyManager()
+      val wordsInGroups = frequencyManager.groupWordsTogether(withoutStopWords)
+      frequencyManager.sortWords(maxWords, wordsInGroups)
+    }
   }
 
-  def removeSpecialChars(lines: List[String]): List[String] = {
-    lines.map(_.replaceAll("[,|;|.]", ""))
+  class SpecialCharsManager(lines: List[String]) {
+    def removeSpecialChars: List[String] = {
+      lines.map(_.replaceAll("[,|;|.]", ""))
+    }
   }
 
-  def removeStopWords(words: List[String]): List[String] = {
-    val exclusions = scala.io.Source
+  class StopWordManager(words: List[String]) {
+
+    def exclusions = scala.io.Source
       .fromInputStream(getClass.getResourceAsStream("/stop_words.txt")).getLines()
       .mkString.split(",").toList
-    words
-      .flatMap(_.split(" "))
-      .map(_.toLowerCase)
-      .filter(!exclusions.contains(_))
-      .filter(_.forall(_.isLetter))
-      .filterNot(_.isEmpty)
+
+    def removeStopWords(): List[String] = {
+      words
+        .flatMap(_.split(" "))
+        .map(_.toLowerCase)
+        .filter(!exclusions.contains(_))
+        .filter(_.forall(_.isLetter))
+        .filterNot(_.isEmpty)
+    }
   }
 
-  def groupWordsTogether(words: List[String]): Map[String, Int] =
-    words
-      .groupBy(identity)
-      .mapValues { t: List[String] => t.size }
+  class WordFrequencyManager {
+    def groupWordsTogether(words: List[String]): Map[String, Int] =
+      words
+        .groupBy(identity)
+        .mapValues { t: List[String] => t.size }
 
-  def sortWords(maxWords: Int)(frequency: Map[String, Int]): Seq[(String, Int)] = {
-    frequency.map { case (k, v) => (k, v) }.toSeq
-      .sortWith { case ((word1, count1), (word2, count2)) => if (count1 == count2) word1.compareTo(word2) <= 0 else count1 > count2 }
-      .take(maxWords)
+    def sortWords(maxWords: Int, frequency: Map[String, Int]): Seq[(String, Int)] = {
+      frequency.map { case (k, v) => (k, v) }.toSeq
+        .sortWith { case ((word1, count1), (word2, count2)) => if (count1 == count2) word1.compareTo(word2) <= 0 else count1 > count2 }
+        .take(maxWords)
+    }
   }
 
   def main(args: Array[String]) {
-    WordFrequencyCounter.frequenciesOf(scala.io.Source.fromFile(args(0)).getLines().toList, 25)
+    val toList: List[String] = scala.io.Source.fromFile(args(0)).getLines().toList
+    new WordFrequencyController(toList, 25)
+      .run
       .foreach { case (word, frequency) => println(s"$word  -  $frequency") }
   }
+
 }
