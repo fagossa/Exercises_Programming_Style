@@ -3,36 +3,44 @@ package fr.xebia.frequency
 object WordFrequencyCounter {
 
   class WordFrequencyController(words: List[String], maxWords: Int) {
+
+    private val specialCharsManager = new SpecialCharsManager(words)
+
+    private val stopWordManager = new StopWordManager()
+
+    private val wordFrequencyManager = new WordFrequencyManager()
+
     def run: Seq[(String, Int)] = {
-      val withoutSpecialChars = new SpecialCharsManager(words).removeSpecialChars
+      val withoutSpecialChars = specialCharsManager.removeSpecialChars()
 
-      val withoutStopWords = new StopWordManager(withoutSpecialChars).removeStopWords()
+      val withoutStopWords = stopWordManager.removeStopWords(withoutSpecialChars)
 
-      // groups and sorts
-      val frequencyManager = new WordFrequencyManager()
-      val wordsInGroups = frequencyManager.groupWordsTogether(withoutStopWords)
-      frequencyManager.sortWords(maxWords, wordsInGroups)
+      val wordsInGroups = wordFrequencyManager.groupWordsTogether(withoutStopWords)
+      wordFrequencyManager.sortWords(maxWords, wordsInGroups)
     }
   }
 
   class SpecialCharsManager(lines: List[String]) {
-    def removeSpecialChars: List[String] = {
+    def removeSpecialChars(): List[String] = {
       lines.map(_.replaceAll("[,|;|.]", ""))
     }
   }
 
-  class StopWordManager(words: List[String]) {
-
-    def exclusions = scala.io.Source
+  class StopWordManager() {
+    lazy val stopWords = scala.io.Source
       .fromInputStream(getClass.getResourceAsStream("/stop_words.txt")).getLines()
       .mkString.split(",").toList
 
-    def removeStopWords(): List[String] = {
+    private def isNotStopWord(word: String): Boolean = !stopWords.contains(word)
+
+    private def containOnlyLetters(word: String) = word.forall(_.isLetter)
+
+    def removeStopWords(words: List[String]): List[String] = {
       words
         .flatMap(_.split(" "))
         .map(_.toLowerCase)
-        .filter(!exclusions.contains(_))
-        .filter(_.forall(_.isLetter))
+        .filter(isNotStopWord)
+        .filter(containOnlyLetters)
         .filterNot(_.isEmpty)
     }
   }
