@@ -1,5 +1,6 @@
 package fr.xebia.frequency
 
+import fr.xebia.frequency.WordFrequencyCounter._
 import org.scalatest.{FunSpec, Matchers}
 
 class WordFrequencyCounterSpec extends FunSpec with Matchers {
@@ -9,7 +10,7 @@ class WordFrequencyCounterSpec extends FunSpec with Matchers {
   describe("Word frequency counter using hardcoded data") {
     it("should ignore special characters") {
       val words = List("hEllo worlD worLd , to ; 4 (")
-      WordFrequencyCounter.frequenciesOf(words, count) should be(List(("world", 2), ("hello", 1)))
+      frequenciesOf(words, count) should be(List(("world", 2), ("hello", 1)))
     }
 
     it("should handle several lines") {
@@ -17,10 +18,26 @@ class WordFrequencyCounterSpec extends FunSpec with Matchers {
         "White tigers live mostly in India",
         "Wild lions live mostly in Africa"
       )
-      WordFrequencyCounter.frequenciesOf(words, count) should be(List(
+      frequenciesOf(words, count) should be(List(
         ("live", 2), ("mostly", 2),
         ("africa", 1), ("india", 1), ("lions", 1), ("tigers", 1), ("white", 1), ("wild", 1)
       ))
+    }
+
+    it("should remove special characters") {
+      val initialPhrases =
+        List("White tigers; live,", "mostly in .India;")
+      removeSpecialChars(initialPhrases) shouldBe List(
+        "White tigers live", "mostly in India"
+      )
+    }
+
+    it("should stop words") {
+      val initialPhrases =
+        List("a white tigers live across", "mostly in all India")
+      removeStopWords(initialPhrases) shouldBe List(
+        "white", "tigers", "live", "mostly", "india"
+      )
     }
 
   }
@@ -30,7 +47,7 @@ class WordFrequencyCounterSpec extends FunSpec with Matchers {
       .fromInputStream(getClass.getResourceAsStream("/mobydick.txt")).getLines().toList
 
     it("should find the most frequent words") {
-      WordFrequencyCounter.frequenciesOf(words, count) should be(List(
+      frequenciesOf(words, count) should be(List(
         ("water", 6),
         ("whenever", 4),
         ("high", 3), ("land", 3), ("men", 3), ("nothing", 3), ("stand", 3), ("take", 3), ("upon", 3),
