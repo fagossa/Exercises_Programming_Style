@@ -3,23 +3,26 @@ package fr.xebia.frequency
 object WordFrequencyCounter {
 
   def frequenciesOf(phrases: List[String], maxWords: Int): Seq[(String, Int)] = {
-    val triggerWith = removeSpecialChars _ andThen removeStopWords andThen groupWordsTogether andThen sortWords(maxWords)
+    val triggerWith = removeSpecialChars _ andThen splitPhrases andThen removeStopWords andThen groupWordsTogether andThen sortWords(maxWords)
     triggerWith(phrases)
   }
 
   def removeSpecialChars(phrases: List[String]): List[String] =
-    phrases.map(_.replaceAll("[,|;|.]", ""))
+    phrases.map(_.replaceAll("[,|;|.|!]", ""))
+
+  def splitPhrases(phrases: List[String]): List[String] =
+    phrases
+      .flatMap(_.split(" "))
+      .map(_.toLowerCase)
+      .filter(_.forall(_.isLetter))
+      .filterNot(_.isEmpty)
 
   def removeStopWords(phrases: List[String]): List[String] = {
     val exclusions = scala.io.Source
       .fromInputStream(getClass.getResourceAsStream("/stop_words.txt")).getLines()
       .mkString.split(",").toList
     phrases
-      .flatMap(_.split(" "))
-      .map(_.toLowerCase)
-      .filter(!exclusions.contains(_))
-      .filter(_.forall(_.isLetter))
-      .filterNot(_.isEmpty)
+      .filterNot(exclusions.contains(_))
   }
 
   def groupWordsTogether(phrases: List[String]): Map[String, Int] =
