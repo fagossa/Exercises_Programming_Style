@@ -1,6 +1,5 @@
 package fr.xebia.frequency
 
-import fr.xebia.frequency.WordFrequencyCounter._
 import org.scalatest.{FunSpec, Matchers}
 
 class WordFrequencyCounterSpec extends FunSpec with Matchers {
@@ -10,27 +9,50 @@ class WordFrequencyCounterSpec extends FunSpec with Matchers {
   describe("Frequency counter unit tested") {
 
     it("should remove special characters") {
-      val initialPhrases =
-        List("White tigers; live,", "mostly in .India;")
-      removeSpecialChars(initialPhrases) shouldBe List(
+      val phrases =
+        List("White tigers; live,", "mostly! in .India;")
+      WordFrequencyCounter.removeSpecialChars(phrases) shouldBe List(
         "White tigers live", "mostly in India"
       )
     }
 
-    it("should split phrases into words") {
-      val initialPhrases =
-        List("white TIGERS live across",
-          "mostly in INDIA 999 2")
-      splitPhrases(initialPhrases) shouldBe List(
+    it("should split phrases into words removing double spaces and keeping only words with letters") {
+      val phrases =
+        List("white  TIGERS live across",
+          "mostly in INDIA 999 a2")
+      WordFrequencyCounter.splitPhrases(phrases) shouldBe List(
         "white", "tigers", "live", "across", "mostly", "in", "india"
       )
     }
 
     it("should remove stop words") {
-      val initialPhrases =
+      val words =
         List("a", "white", "tigers", "live", "across", "mostly", "in", "all", "india")
-      removeStopWords(initialPhrases) shouldBe List(
+      WordFrequencyCounter.removeStopWords(words) shouldBe List(
         "white", "tigers", "live", "mostly", "india"
+      )
+    }
+
+    it("should groups words") {
+      val words =
+        List("white", "white", "tigers", "tigers", "tigers", "mostly")
+      WordFrequencyCounter.groupWordsTogether(words) shouldBe Map(
+        "white" -> 2,
+        "tigers" -> 3,
+        "mostly" -> 1
+      )
+    }
+
+    it("should sort already grouped words") {
+      val frequency = Map(
+        "white" -> 2,
+        "tigers" -> 3,
+        "mostly" -> 1
+      )
+      WordFrequencyCounter.sortWords(25)(frequency) shouldBe Seq(
+        ("tigers", 3),
+        ("white", 2),
+        ("mostly", 1)
       )
     }
 
@@ -39,7 +61,7 @@ class WordFrequencyCounterSpec extends FunSpec with Matchers {
   describe("Frequency counter tested integrally") {
     it("should ignore special characters") {
       val words = List("hEllo worlD worLd , to ; 4 (")
-      frequenciesOf(words, count) should be(List(("world", 2), ("hello", 1)))
+      WordFrequencyCounter.frequenciesOf(words, count) should be(List(("world", 2), ("hello", 1)))
     }
 
     it("should handle several lines") {
@@ -47,7 +69,7 @@ class WordFrequencyCounterSpec extends FunSpec with Matchers {
         "White tigers live mostly in India",
         "Wild lions live mostly in Africa"
       )
-      frequenciesOf(phrases, count) should be(List(
+      WordFrequencyCounter.frequenciesOf(phrases, count) should be(List(
         ("live", 2), ("mostly", 2),
         ("africa", 1), ("india", 1), ("lions", 1), ("tigers", 1), ("white", 1), ("wild", 1)
       ))
@@ -57,7 +79,7 @@ class WordFrequencyCounterSpec extends FunSpec with Matchers {
       .fromInputStream(getClass.getResourceAsStream("/mobydick.txt")).getLines().toList
 
     it("should find the most frequent words") {
-      frequenciesOf(words, count) should be(List(
+      WordFrequencyCounter.frequenciesOf(words, count) should be(List(
         ("water", 6),
         ("whenever", 4),
         ("high", 3), ("land", 3), ("men", 3), ("nothing", 3), ("stand", 3), ("take", 3), ("upon", 3),
