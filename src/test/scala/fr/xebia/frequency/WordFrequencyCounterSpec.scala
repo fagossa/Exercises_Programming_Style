@@ -49,7 +49,7 @@ class WordFrequencyCounterSpec extends FunSpec with Matchers {
         "tigers" -> 3,
         "mostly" -> 1
       )
-      WordFrequencyCounter.sortWords(25)(frequency) shouldBe Seq(
+      WordFrequencyCounter.sortWords(count)(frequency) shouldBe Seq(
         ("tigers", 3),
         ("white", 2),
         ("mostly", 1)
