@@ -22,6 +22,8 @@ import {
   Text
 } from "spectacle";
 
+import CodeSlide from "spectacle-code-slide"
+
 // Import image preloader util
 import preloader from "spectacle/lib/utils/preloader";
 
@@ -31,6 +33,7 @@ import createTheme from "spectacle/lib/themes/default";
 // Require CSS
 require("normalize.css");
 require("spectacle/lib/themes/default/index.css");
+require("../presentation/presentation.css");
 
 
 const images = {
@@ -136,6 +139,9 @@ export default class Presentation extends React.Component {
               <Heading textColor="primary">Monolithic</Heading>
             </Appear>
           </Slide>
+          <CodeSlide transition={[]} lang="scala" code={require("raw!../assets/monolithic.scala")} ranges={[
+          { loc: [0, 56], title: "Overview" }
+          ]} />
           <Slide bgImage={images.basic.replace("/", "")} bgDarken={0.75} notes="<ul><li>">
             <Heading>Basic Styles</Heading>
             <Heading textColor="primary">Monolithic</Heading>
