@@ -64,8 +64,7 @@ object MonolithicWordFrequency {
       })
     })
 
-    val index = wordFreqs.view.zipWithIndex
-    for ((tf, i) <- index.takeWhile { case (a, b) => b < 25 }) {
+    for (tf <- wordFreqs.take(25)) {
       println(s"${tf.word}  -  ${tf.freq}")
     }
   }
