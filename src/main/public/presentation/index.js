@@ -245,7 +245,10 @@ export default class Presentation extends React.Component {
             </Appear>
           </Slide>
           <Slide bgImage={images.meta.replace("/", "")} bgDarken={0.75} notes="<ul>
-            <li>TODO</li>
+            <li>Introspective: access to information about itself</li>
+            <li>Reflective: like introspective but can modify itself</li>
+            <li>Aside: aspect oriented programming</li>
+            <li>No Commitment: dynamic linking/loading (META-INF/services) be careful of conf hell</li>
           </ul>">
             <Heading caps fit>Reflection and Metaprogramming</Heading>
             <Appear>
