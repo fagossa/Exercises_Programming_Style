@@ -291,6 +291,42 @@ export default class Presentation extends React.Component {
             <Appear>
               <Heading textColor="primary" size={2}>Spreadsheet</Heading>
             </Appear>
+          </Slide>
+          <CodeSlide transition={[]} lang="python" code={require("raw!../assets/tf-26.py")} ranges={[
+            { loc: [0, 1], title: "Python FTW!" },
+            { loc: [4, 5], title: "Python FTW!" },
+            { loc: [23, 26], title: "columns sorted by dependency" },
+            { loc: [5, 9] },
+            { loc: [9, 13], title: "copy all words except stop ones" },
+            { loc: [13, 15], title: "select distinct non stop words" },
+            { loc: [15, 18], title: "count each unique from non stop words" },
+            { loc: [18, 22], title: "sort by frequency" },
+            { loc: [39, 42] },
+            { loc: [42, 44] },
+            { loc: [27, 37], title: "update formulas" },
+            { loc: [45, 47], title: "prints out result" }
+            ]} />
+          <Slide>
+            <Heading size={1} caps fit>Constraints</Heading>
+            <Appear>
+              <Heading textColor="black" caps fit>Like a spreadsheet</Heading>
+            </Appear>
+            <Appear>
+              <Heading textColor="black" caps fit>Formulas are applied when data change</Heading>
+            </Appear>
+            <Appear>
+              <Heading textColor="black" caps fit>Inherently declarative and reactive</Heading>
+            </Appear>
+            <Appear>
+              <Heading textColor="black" caps fit>Custom dependency management</Heading>
+            </Appear>
+          </Slide>
+          <Slide bgImage={images.data_first.replace("/", "")} bgDarken={0.75} notes="<ul>
+            <li>TODO</li>
+          </ul>">
+            <Heading caps fit>Data First</Heading>
+            <Heading textColor="primary" size={2}>Persistent Tables</Heading>
+            <Heading textColor="primary" size={2}>Spreadsheet</Heading>
             <Appear>
               <Heading textColor="primary" size={2}>Lazy Rivers</Heading>
             </Appear>
