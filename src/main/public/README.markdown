@@ -1,5 +1,13 @@
 # Spectacle Boilerplate
 
+## User notes
+
+Start server:
+
+    npm start
+
+Then go to [http://localhost:3000](screen) and [http://localhost:3000?presenter](presenter)
+
 ## Reference
 
 The Spectacle core API is available at [https://github.com/FormidableLabs/spectacle/blob/master/README.markdown](https://github.com/FormidableLabs/spectacle/blob/master/README.markdown).
