@@ -50,7 +50,8 @@ const images = {
   interactivity: require("../assets/interactivity.gif"),
   meta: require("../assets/meta.gif"),
   object: require("../assets/object.gif"),
-  trollface: require("../assets/trollface.png")
+  trollface: require("../assets/trollface.png"),
+  livecoding: require("../assets/live-coding.gif")
 };
 
 preloader(images);
@@ -191,6 +192,9 @@ export default class Presentation extends React.Component {
               <Heading textColor="primary">Candy Factory</Heading>
             </Appear>
           </Slide>
+          <Slide bgImage={images.livecoding.replace("/", "")} bgDarken={0.75}>
+            <Heading caps fit>Live Coding!</Heading>
+          </Slide>
           <Slide bgImage={images.basic.replace("/", "")} bgDarken={0.75} notes="<ul><li>Code Golf: as few lines of code as possible</li></ul>">
             <Heading caps fit>Basic Styles</Heading>
             <Heading textColor="primary">Monolithic</Heading>
@@ -199,6 +203,16 @@ export default class Presentation extends React.Component {
             <Appear>
               <Heading textColor="primary">Code Golf</Heading>
             </Appear>
+          </Slide>
+          <Slide bgImage={images.livecoding.replace("/", "")} bgDarken={0.75}>
+            <Heading caps fit>Live Coding!</Heading>
+          </Slide>
+          <Slide bgImage={images.basic.replace("/", "")} bgDarken={0.75} notes="<ul><li>Code Golf: as few lines of code as possible</li></ul>">
+            <Heading caps fit>Basic Styles</Heading>
+            <Heading textColor="primary">Monolithic</Heading>
+            <Heading textColor="primary">Cookbook</Heading>
+            <Heading textColor="primary">Candy Factory</Heading>
+            <Heading textColor="primary">Code Golf</Heading>
           </Slide>
           <Slide bgImage={images.function_composition.replace("/", "")} bgDarken={0.75} notes="<ul>
             <li>Infinite Mirror: recursive</li>
@@ -295,20 +309,9 @@ export default class Presentation extends React.Component {
               <Heading textColor="primary" size={2}>Spreadsheet</Heading>
             </Appear>
           </Slide>
-          <CodeSlide transition={[]} lang="python" code={require("raw!../assets/tf-26.py")} ranges={[
-            { loc: [0, 1], title: "Python FTW!" },
-            { loc: [4, 5], title: "Python FTW!" },
-            { loc: [23, 26], title: "columns sorted by dependency" },
-            { loc: [5, 9] },
-            { loc: [9, 13], title: "copy all words except stop ones" },
-            { loc: [13, 15], title: "select distinct non stop words" },
-            { loc: [15, 18], title: "count each unique from non stop words" },
-            { loc: [18, 22], title: "sort by frequency" },
-            { loc: [39, 42] },
-            { loc: [42, 44] },
-            { loc: [27, 37], title: "update formulas" },
-            { loc: [45, 47], title: "prints out result" }
-            ]} />
+          <Slide bgImage={images.livecoding.replace("/", "")} bgDarken={0.75}>
+            <Heading caps fit>Live Coding!</Heading>
+          </Slide>
           <Slide>
             <Heading size={1} caps fit>Constraints</Heading>
             <Appear>
